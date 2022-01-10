@@ -1,0 +1,2 @@
+#!/bin/execlineb -P
+mkdir -p -m 0777 "/tmp/${USER}.run.d"

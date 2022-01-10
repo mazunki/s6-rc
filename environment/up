@@ -1,0 +1,2 @@
+#!/bin/sh
+source ${XDG_CONFIG_DIR:-${HOME:-/home/${USER-:$(whoami)}/.config}/environment
