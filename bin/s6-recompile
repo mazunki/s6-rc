@@ -1,0 +1,15 @@
+#!/bin/sh
+NAME=$(date +%F-%H-%M-%S)
+
+echo ">> compiling"
+s6-rc-compile ~/.local/s6/compilations/"${NAME}" ~/.local/s6/src/* || exit 1
+
+echo ">> unlinking old compiled"
+unlink ~/.local/s6/compiled || exit 2
+
+echo ">> linking new compiled"
+ln -s ~/.local/s6/compilations/"${NAME}" ~/.local/s6/compiled || exit 3
+
+# echo ">> updating link"
+# s6-rc-update -l /tmp/mazunki.run.d/s6/link ~/.local/s6/"${NAME}" || echo "You had no running svscan, it seems. Remember to recompile when svscan is already up and running."
+

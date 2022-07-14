@@ -1,0 +1,2 @@
+#!/bin/sh
+s6-rc -l /tmp/mazunki.run.d/s6/link -u change $1

@@ -1,0 +1,12 @@
+#!/bin/sh
+if [ "$EUID" = 0 ]; then
+	doas bat -l log /run/uncaught-logs/current
+else
+	if [ "$1" = "-u" ]; then
+		find ~/.local/logs/s6/ -name 'current' | xargs bat -l log
+	elif [ -n "$1" ]; then
+		bat -l log /var/log/"$1"/current
+	else
+		find /var/log -name 'current' -not -wholename '*udevd*' | xargs bat -l log
+	fi
+fi

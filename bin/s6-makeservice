@@ -1,0 +1,20 @@
+#!/bin/sh
+SERVICE=${1?:Need service.}
+
+mkdir -p -- "$SERVICE-srv" "$SERVICE-log" || exit
+
+(
+	cd -- "$SERVICE-srv"
+	touch run # write it
+	echo longrun > type
+	echo "$SERVICE-log" > producer-for
+)
+(
+	cd -- "$SERVICE-log"
+	printf '%s\n' '#!/bin/execlineb -P' "~/.local/bin/s6-userlogger $SERVICE" > run
+	echo 3 > notification-fd
+	echo longrun > type
+	echo "$SERVICE-srv" > consumer-for
+	echo "$SERVICE" > pipeline-name
+)
+

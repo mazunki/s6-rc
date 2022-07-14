@@ -1,0 +1,10 @@
+#!/bin/sh
+# turn every service down
+s6-rc -l "${XDG_RUNTIME_DIR}"/s6/link -a list | xargs -I{} s6-rc -l "${XDG_RUNTIME_DIR}"/s6/link -d change {}
+# remove the watcher
+find "${XDG_RUNTIME_DIR}"/s6/watch -type l | xargs -I{} unlink {}
+# delete old links
+find "${XDG_RUNTIME_DIR}"/s6 -name 'link:*' -type d | xargs -n1 rm -r
+# remove living link
+[ -e "${XDG_RUNTIME_DIR}"/s6/link ] && unlink "${XDG_RUNTIME_DIR}"/s6/link
+

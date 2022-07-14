@@ -1,0 +1,24 @@
+#!/bin/sh
+
+[ -z "$1" ] && echo "Filename required" && exit 1
+
+LOGPATH="${XDG_LOG_HOME:-${HOME:-/home/$(whoami)}/.local/logs}/s6"
+LOGNAME="${1}"
+[ -z "$2" ] || shift 1
+
+mkdir -p -- "${LOGPATH}/old"
+
+if [ -e "${LOGPATH}/${LOGNAME}.log" ]; then  # we could mv but meh
+	cat "${LOGPATH}/${LOGNAME}.log" >  "${LOGPATH}/old/${LOGNAME}.log"
+	rm "${LOGPATH}/${LOGNAME}.log"
+fi
+if [ -e "${LOGPATH}/${LOGNAME}.err" ]; then
+	cat "${LOGPATH}/${LOGNAME}.err" >> "${LOGPATH}/old/${LOGNAME}.log"
+	rm "${LOGPATH}/${LOGNAME}.err"
+fi
+
+exec "$@" \
+	1> "${LOGPATH}/${LOGNAME}.log" \
+	2> "${LOGPATH}/${LOGNAME}.err"
+
+

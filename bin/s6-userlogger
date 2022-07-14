@@ -1,0 +1,13 @@
+#!/bin/execlineb
+backtick -E USER { id -un }
+backtick HOME { homeof $USER }
+multisubstitute
+{
+	importas -i SRV 1
+	importas -i H HOME
+}
+foreground {
+	install -m 755 -d -o $USER -g $USER $HOME/.local/s6
+	install -m 755 -d -o $USER -g $USER $HOME/.local/s6/${SRV}
+}
+exec -c s6-log -d3 -b -- n3 s2000000 T /home/mazunki/.local/logs/s6/${SRV}
