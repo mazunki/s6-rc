@@ -1,5 +1,0 @@
-#!/bin/execlineb -P
-[ -z "${XDG_RUNTIME_DIR}" ] && echo "You dumb dumb haven't set any runtime dir!" && exit
-NO_AT_BRIDGE=1
-exec dbus-daemon
-
